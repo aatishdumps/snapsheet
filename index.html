@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#F6F6F7" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0B0B0C" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
+
+    <!-- Primary SEO -->
+    <title>SnapSheet — Passport Photo &amp; Print Sheet Editor</title>
+    <meta
+      name="description"
+      content="SnapSheet is a free, fully offline passport, visa and ID photo editor. Crop to official specs and export print-ready PNG, JPG or PDF photo sheets at 300 DPI — entirely in your browser, with no upload."
+    />
+    <meta name="application-name" content="SnapSheet" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://snapsheets.pages.dev/" />
+
+    <!-- Installed-PWA appearance -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="SnapSheet" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
+    <!-- Open Graph (Facebook, LinkedIn, etc.) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="SnapSheet" />
+    <meta property="og:url" content="https://snapsheets.pages.dev/" />
+    <meta property="og:title" content="SnapSheet — Passport Photo &amp; Print Sheet Editor" />
+    <meta
+      property="og:description"
+      content="Crop photos to official passport, visa and ID specs and export print-ready PNG/JPG/PDF sheets at 300 DPI — free, offline, in your browser."
+    />
+    <meta property="og:image" content="https://snapsheets.pages.dev/icons/icon-512.png" />
+
+    <!-- Twitter / X card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="SnapSheet — Passport Photo &amp; Print Sheet Editor" />
+    <meta
+      name="twitter:description"
+      content="Crop photos to official passport, visa and ID specs and export print-ready PNG/JPG/PDF sheets at 300 DPI — free, offline, in your browser."
+    />
+    <meta name="twitter:image" content="https://snapsheets.pages.dev/icons/icon-512.png" />
+
+    <!--
+      Apply the saved theme before first paint to avoid a flash of the wrong
+      theme. Mirrors the logic in src/ui/theme/theme.ts (storage key + rules).
+    -->
+    <script>
+      (function () {
+        try {
+          var mode = localStorage.getItem('phototool-theme');
+          var dark =
+            mode === 'dark' ||
+            ((!mode || mode === 'system') &&
+              window.matchMedia('(prefers-color-scheme: dark)').matches);
+          if (dark) document.documentElement.classList.add('dark');
+        } catch (e) {
+          /* localStorage unavailable — fall back to the light theme. */
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

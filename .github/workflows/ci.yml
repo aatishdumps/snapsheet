@@ -1,0 +1,19 @@
+name: CI
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          # No `cache: npm` and `npm install` (not `npm ci`): the repo
+          # intentionally ships no package-lock.json — both require one.
+          node-version-file: .nvmrc
+      - run: npm install
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run build

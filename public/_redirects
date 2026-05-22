@@ -1,0 +1,4 @@
+# SPA fallback — serve index.html for any unknown path so a hard refresh or
+# direct link never 404s. SnapSheet has a single route today; this is a
+# harmless safety net for Cloudflare Pages.
+/*  /index.html  200

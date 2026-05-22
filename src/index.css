@@ -1,0 +1,136 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens — the single source of truth for the UI surface.
+ *
+ * Tailwind v4 is CSS-first (no tailwind.config.js); the @theme block surfaces
+ * every token as a utility (bg-card, text-fg, gap-md, p-lg, text-heading, …).
+ * No inline hex, no ad-hoc px values in components.
+ *
+ * THEMING: colour tokens are declared with their LIGHT values in @theme, then
+ * re-declared under `:root.dark` (higher specificity, so it wins). Components
+ * reference the semantic token names only, so they re-theme for free — there
+ * are no `dark:` utilities anywhere in the component tree.
+ */
+@theme {
+  /* Spacing scale — surfaces p-md, gap-lg, etc. */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 64px;
+
+  /*
+   * Content-column max-widths.
+   *
+   * NOT the Tailwind default container scale. Tailwind v4's `max-w-<name>`
+   * utility resolves the `--spacing-*` namespace, and this project's custom
+   * spacing tokens redefine the `md` / `3xl` keys — so a bare `max-w-3xl` /
+   * `max-w-md` would collapse a content column to a tiny strip. These
+   * purpose-named tokens surface as `max-w-readable` / `max-w-prose` and are
+   * immune to that collision.
+   */
+  --container-readable: 64rem; /* the centred app content column */
+  --container-prose: 22rem; /* the editor / layout control rail */
+
+  /* Colour — LIGHT theme. Dark overrides live in `:root.dark` below. */
+  --color-surface: #F6F6F7; /* app background */
+  --color-card: #FFFFFF; /* panels, inputs, raised chrome */
+  --color-muted: #F0F0F2; /* subtle fills, hover states, chips */
+  --color-chrome: #E4E4E7; /* hairline borders */
+  --color-accent: #4F46E5; /* primary actions, selection, focus */
+  --color-accent-hover: #4338CA;
+  --color-destructive: #DC2626;
+  --color-fg: #18181B; /* primary text */
+  --color-fg-muted: #71717A; /* secondary text */
+  --color-fg-subtle: #A1A1AA; /* tertiary text, placeholders */
+  --color-canvas-editor: #ECECEE; /* the editor preview backdrop */
+  --color-canvas-layout: #ECECEE; /* the layout sheet backdrop */
+  --color-paper: #FFFFFF; /* physical paper — white in both themes */
+
+  /* Elevation — soft, single-source shadows. */
+  --shadow-card: 0 1px 2px rgb(24 24 27 / 0.04), 0 1px 3px rgb(24 24 27 / 0.06);
+  --shadow-pop: 0 8px 24px rgb(24 24 27 / 0.12), 0 2px 6px rgb(24 24 27 / 0.08);
+
+  /* Typography — system stack (offline PWA: no web-font fetch). */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* Type sizes. */
+  --text-body: 16px;
+  --text-label: 14px;
+  --text-heading: 19px;
+  --text-display: 28px;
+}
+
+/* Dark theme — overrides win via `:root.dark` (specificity 0,2,0 > :root). */
+:root.dark {
+  --color-surface: #0B0B0C;
+  --color-card: #161618;
+  --color-muted: #232326;
+  --color-chrome: #2A2A2E;
+  --color-accent: #4F46E5;
+  --color-accent-hover: #6366F1;
+  --color-destructive: #F0595E;
+  --color-fg: #F4F4F5;
+  --color-fg-muted: #A1A1AA;
+  --color-fg-subtle: #71717A;
+  --color-canvas-editor: #0E0E10;
+  --color-canvas-layout: #0E0E10;
+  --color-paper: #FFFFFF;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4), 0 1px 3px rgb(0 0 0 / 0.5);
+  --shadow-pop: 0 8px 24px rgb(0 0 0 / 0.6), 0 2px 6px rgb(0 0 0 / 0.5);
+}
+
+/* Native controls (scrollbars, range, colour picker, select menu) match. */
+:root {
+  color-scheme: light;
+}
+:root.dark {
+  color-scheme: dark;
+}
+
+@layer base {
+  html,
+  body {
+    background-color: var(--color-surface);
+  }
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-fg);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  /*
+   * Interactive elements show the pointer (hand) cursor. Modern browsers
+   * default `<button>` to the arrow cursor, which makes the whole UI feel
+   * non-clickable — this restores the expected affordance.
+   */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  select:not(:disabled),
+  summary,
+  a[href] {
+    cursor: pointer;
+  }
+  /* Theme tokens cross-fade instead of hard-cutting on toggle. */
+  body,
+  body * {
+    transition: background-color 160ms ease, border-color 160ms ease,
+      color 160ms ease;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    body,
+    body * {
+      transition: none;
+    }
+  }
+}
+
+@layer utilities {
+  /* Dimension/value fields keep digits from shifting while a slider drags. */
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
